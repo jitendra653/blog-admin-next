@@ -1,24 +1,23 @@
-import { connectMongoDB } from "@/lib/mongodb";
-import User from "@/models/user";
-import NextAuth, { NextAuthOptions, User as NextAuthUser, JWT, Session } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { connectMongoDB } from "@/lib/mongodb";
+import User from "@/models/user";
 
 interface Credentials {
   email: string;
   password: string;
 }
 
-interface NextAuthUserWithId extends NextAuthUser {
+interface NextAuthUserWithId extends NextAuth.User {
   id?: string;
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
       credentials: {},
-
       async authorize(credentials: Credentials) {
         const { email, password } = credentials;
 
@@ -52,13 +51,13 @@ export const authOptions: NextAuthOptions = {
     signIn: "/",
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: NextAuthUserWithId }) {
+    async jwt({ token, user }: { token: any; user?: NextAuthUserWithId }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token.id) {
         session.user.id = token.id as string;
       }
