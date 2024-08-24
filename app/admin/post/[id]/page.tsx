@@ -2,6 +2,7 @@
 
 import PostForm from '@/components/post/PostForm';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 

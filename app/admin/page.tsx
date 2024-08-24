@@ -1,6 +1,7 @@
 "use client";
 
 import { LineChart, PieChart } from "@mui/x-charts";
+import Image from "next/image";
 
 const Page: React.FC = () => {
   return (
@@ -11,13 +12,17 @@ const Page: React.FC = () => {
           <p className="text-sm text-gray-500">Admin Panel</p>
         </div>
         <div className="flex items-center space-x-4">
-          <img
-            src="https://img.icons8.com/color/48/000000/bell--v1.png"
+          <Image
+          width={20}
+          height={20}
+            src="/uploads/bell--v1.png"
             alt="Notifications"
             className="h-6 w-6"
           />
-          <img
-            src="https://img.icons8.com/color/48/000000/user-male-circle--v1.png"
+          <Image
+          width={10}
+          height={20}
+            src="/uploads/user-male-circle--v1.png"
             alt="User Profile"
             className="h-10 w-10 rounded-full"
           />

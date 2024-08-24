@@ -7,10 +7,13 @@ import { TbUsers } from "react-icons/tb";
 import { MdOutlineIncompleteCircle, MdOutlinePending, MdOutlinePerson } from "react-icons/md";
 import { FaList } from "react-icons/fa";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const Sidebar: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const pathname = usePathname();
+  console.log({pathname});
+  
   const handleToggle = (): void => {
     setIsOpen(prev => !prev);
   };
@@ -22,25 +25,25 @@ const Sidebar: FC = () => {
       </h3>
       <ul className="flex flex-col items-center text-[15px] text-left space-y-10 mt-10">
         <Link href="/admin">
-          <li className="flex items-center text-left hover:text-slate-200 cursor-pointer font-semibold">
+          <li className={`${pathname == '/admin' ? 'text-violet-600' :  'text-black'}  flex items-center text-left hover:text-violet-600 cursor-pointer font-semibold`}>
             <IoHomeOutline className="text-2xl mr-2" />
             Home
           </li>
         </Link>
         <Link href="/admin/postlist">
-          <li className="flex text-left hover:text-slate-200 cursor-pointer font-semibold">
+          <li  className={`${pathname == '/admin/postlist' ? 'text-violet-600' :  'text-black'}  flex items-center text-left hover:text-violet-600 cursor-pointer font-semibold`}>
             <FaList className="text-2xl mr-2" />
             Posts
           </li>
         </Link>
         <Link href="/admin/users">
-          <li className="flex text-left hover:text-slate-200 cursor-pointer font-semibold">
+          <li  className={`${pathname == '/admin/users' ? 'text-violet-600' :  'text-black'}  flex items-center text-left hover:text-violet-600 cursor-pointer font-semibold`}>
             <TbUsers className="text-2xl mr-2" />
             Users
           </li>
         </Link>
         <Link href="/admin/profile">
-          <li className="flex text-left hover:text-slate-200 cursor-pointer font-semibold">
+          <li  className={`${pathname == '/admin/profile' ? 'text-violet-600' :  'text-black'}  flex items-center text-left hover:text-violet-600 cursor-pointer font-semibold`}>
             <MdOutlinePerson className="text-2xl mr-2" />
             Profile
           </li>
@@ -48,7 +51,7 @@ const Sidebar: FC = () => {
         <div className="relative">
           <li
             onClick={handleToggle}
-            className="flex text-left hover:text-slate-200 cursor-pointer font-semibold"
+             className={`flex items-center text-left hover:text-violet-600 cursor-pointer font-semibold`}
           >
             <IoPowerSharp className="text-2xl mr-2" />
             Logout

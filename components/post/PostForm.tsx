@@ -4,6 +4,8 @@ import { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import JoditEditor from "jodit-react";
 import UploadForm from "../image/UploadForm";
+import Image from "next/image";
+import React from "react";
 
 interface PostFormProps {
   type?: "Add" | "Edit";
@@ -94,7 +96,7 @@ const PostForm: FC<PostFormProps> = ({ type = "Add", handleSubmit, postData, set
             {imageUrl && (
               <div>
                 <h3>Uploaded Image:</h3>
-                <img width="200px" src={`https://reactadvance.s3.eu-north-1.amazonaws.com/${imageUrl}`} alt="Uploaded" />
+                <Image width={200} height={200} src={`https://reactadvance.s3.eu-north-1.amazonaws.com/${imageUrl}`} alt="Uploaded" />
               </div>
             )}
           </div>
@@ -148,7 +150,7 @@ const PostForm: FC<PostFormProps> = ({ type = "Add", handleSubmit, postData, set
             Tags
           </label>
           <ul className="mt-1 flex gap-2 list-inside list-none text-gray-700">
-            {postData.tags.length > 0 ? (
+            {postData?.tags?.length > 0 ? (
               postData.tags.map((tag, index) => <li className="bg-purple-600 p-2 px-3 rounded-md text-white" key={index}>{tag}</li>)
             ) : (
               <li className="text-gray-400">No tags selected</li>

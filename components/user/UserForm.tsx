@@ -8,7 +8,7 @@ interface UserFormProps {
     role: string;
   };
   isAdd:boolean;
-  onSubmit: (data: { name: string; email: string; status: string; role: string; password: string },isAdd:boolean) => void;
+  onSubmit: (data:React.FormEvent<HTMLFormElement>,isAdd?:boolean) => void;
 }
 
 const UserForm: React.FC<UserFormProps> = ({ initialData,isAdd, onSubmit }) => {

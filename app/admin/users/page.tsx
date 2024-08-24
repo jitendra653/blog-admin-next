@@ -11,11 +11,12 @@ import Modal from '@/components/modal/Modal';
 import Link from 'next/link';
 
 interface User {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   role: string;
   status: string;
+  _id?:any
 }
 
 interface UserFormData {

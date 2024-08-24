@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface Post {
   id: number;
@@ -86,7 +87,7 @@ const Settings = () => {
     {
       field: 'image', headerName: 'Image', width: 200,
       renderCell: (params) => (
-        <img src={`${process.env.AWS_S3_BUCKET_URL || 'https://reactadvance.s3.eu-north-1.amazonaws.com'}/${params.value}`} alt={params.row.title} />
+        <Image width={200} height={200} src={`${process.env.AWS_S3_BUCKET_URL || 'https://reactadvance.s3.eu-north-1.amazonaws.com'}/${params.value}`} alt={params.row.title} />
       ),
     },
     {

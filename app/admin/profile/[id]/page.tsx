@@ -1,6 +1,5 @@
 "use client";
 
-import PostForm from '@/components/post/PostForm';
 import UserForm from '@/components/user/UserForm';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -41,11 +40,20 @@ const Register: React.FC<EditFormProps> = ({ params }) => {
     if (id) {
       fetch(`/api/profile/${id}`)
         .then((response) => response.json())
-        .then((data) => {
-          setUserData(data);
-          setFormData({ name: data.name, email: data.email });
+        .then((data: User) => {
+          setUserData((prev) => ({
+            ...prev,
+            title: data.name, 
+            image: data.email,
+            description: data.status || '', 
+            content: data.role || '' 
+          }));
+          setFormData({ name: data.name, email: data.email,status:'',role: '' });
         })
-        .catch((error) => console.error('Error fetching user data:', error));
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+          toast.error('Failed to load user data');
+        });
     }
   }, [id]);
 
@@ -73,15 +81,12 @@ const Register: React.FC<EditFormProps> = ({ params }) => {
       }
     } catch (error) {
       console.error("Error during post editing:", error);
+      toast.error('An unexpected error occurred');
     }
   };
 
-  const initialData = id
-    ? { name: '', email: '' }
-    : undefined;
-
   return formData ? (
-    <UserForm initialData={formData} onSubmit={handleSubmit} />
+    <UserForm initialData={formData} onSubmit={handleSubmit} isAdd={false} />
   ) : null;
 };
 

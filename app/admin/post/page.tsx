@@ -1,9 +1,10 @@
 "use client";
 import { toast } from "react-toastify";
-import PostForm from "../../../components/post/PostForm";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-
+import React from "react";
+import dynamic from 'next/dynamic';
+const PostForm = dynamic(() => import('../../../components/post/PostForm'), {ssr: false,});
 interface PostData {
   title: string;
   image: string;
@@ -33,7 +34,6 @@ const AddPost = () => {
 
     if (!title || !description || !image || !status) {
       toast.warning('All fields are necessary.');
-      alert("All fields are necessary.");
       return;
     }
 
@@ -67,3 +67,5 @@ const AddPost = () => {
 }
 
 export default AddPost;
+
+

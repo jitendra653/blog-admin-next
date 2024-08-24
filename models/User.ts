@@ -7,7 +7,6 @@ interface IUser extends Document {
   role?: string;
   password?: string;
 }
-
 const userSchema: Schema<IUser> = new Schema(
   {
     name: {
