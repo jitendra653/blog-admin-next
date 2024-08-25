@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface UserFormProps {
   initialData?: {
@@ -7,11 +8,12 @@ interface UserFormProps {
     status: string;
     role: string;
   };
-  isAdd:boolean;
-  onSubmit: (data:React.FormEvent<HTMLFormElement>,isAdd?:boolean) => void;
+  isAdd: boolean;
+  isUser: boolean;
+  onSubmit: (data: React.FormEvent<HTMLFormElement>, isAdd?: boolean) => void;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ initialData,isAdd, onSubmit }) => {
+const UserForm: React.FC<UserFormProps> = ({ initialData, isAdd, isUser = false, onSubmit }) => {
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
     email: initialData?.email || '',
@@ -41,10 +43,10 @@ const UserForm: React.FC<UserFormProps> = ({ initialData,isAdd, onSubmit }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      toast.warning('Password and Confirm Password do not match');
       return;
     }
-    onSubmit({ ...formData, status: formData.status ? 'active' : 'inactive' },isAdd);
+    onSubmit({ ...formData, status: formData.status ? 'active' : 'inactive' }, isAdd);
   };
 
   return (
@@ -123,35 +125,38 @@ const UserForm: React.FC<UserFormProps> = ({ initialData,isAdd, onSubmit }) => {
           </button>
         </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Role</label>
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        >
-          <option value="">Select Role</option>
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Status</label>
-        <div className="flex items-center mt-1">
-          <span className="mr-2">Inactive</span>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={formData.status}
-              onChange={handleToggleStatus}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-500 dark:bg-gray-700 peer-checked:bg-indigo-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-          </label>
-          <span className="ml-2">Active</span>
+
+      {!isUser && <>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Role</label>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          >
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
         </div>
-      </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <div className="flex items-center mt-1">
+            <span className="mr-2">Inactive</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.status}
+                onChange={handleToggleStatus}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-500 dark:bg-gray-700 peer-checked:bg-indigo-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            </label>
+            <span className="ml-2">Active</span>
+          </div>
+        </div></>}
+
       <div className='mx-auto flex justify-center'>
         <button
           type="submit"

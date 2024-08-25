@@ -9,6 +9,7 @@ import ModalAlert from "@/components/modal/ConfirmModal";
 import UserForm from '@/components/user/UserForm';
 import Modal from '@/components/modal/Modal';
 import Link from 'next/link';
+import React from 'react';
 
 interface User {
   id?: number;
@@ -171,6 +172,7 @@ const Page = () => {
         <button onClick={() => {
           setIsAdd(true);
           setIsModalOpen(true);
+          setInitialData({})
         }}>Add User</button>
       </div>
       <DataGrid rows={rows} columns={columns} />

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import React from "react";
 
 interface Post {
   id: number;

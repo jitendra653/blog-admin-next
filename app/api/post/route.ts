@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
     const { title, description, image, content, category, tags,status }: PostData = await req.json();
     await connectMongoDB();
     const slug = await slugify(title);
-
     await Post.create({
       title,
       slug,

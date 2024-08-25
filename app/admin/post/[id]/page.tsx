@@ -22,10 +22,9 @@ interface PostData {
   status: "Draft" | "Published" | "";
 }
 
-const Register: React.FC<EditFormProps> = ({ params }) => {
+const EditPost: React.FC<EditFormProps> = ({ params }) => {
   const { id } = params;
   const router = useRouter();
-  
   const [postData, setPostData] = useState<PostData>({
     title: '',
     image: '',
@@ -58,12 +57,10 @@ const Register: React.FC<EditFormProps> = ({ params }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { title, description, image } = postData;
-    
     if (!title || !description || !image) {
       toast.warning('All fields are necessary.');
       return;
     }
-    
     try {
       const res = await fetch(`/api/post/${id}`, {
         method: "PUT",
@@ -72,7 +69,6 @@ const Register: React.FC<EditFormProps> = ({ params }) => {
         },
         body: JSON.stringify(postData),
       });
-
       if (res.ok) {
         toast.success('Post edited successfully');
         router.push("/admin/postlist");
@@ -83,8 +79,7 @@ const Register: React.FC<EditFormProps> = ({ params }) => {
       console.error("Error during editing: ", error);
     }
   };
-
   return <PostForm type="Edit" postData={postData} handleSubmit={handleSubmit} setPostData={setPostData} />;
 }
 
-export default Register;
+export default EditPost;
