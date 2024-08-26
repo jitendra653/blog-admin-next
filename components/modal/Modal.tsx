@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Portal from '../portal/Portal';
+import React from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,7 +15,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <button
-            className="absolute top-0 right-0 mt-4 mr-4 text-gray-600"
+            className="absolute top-0 right-0 mt-4 mr-4 text-white"
             onClick={onClose}
           >
             ×

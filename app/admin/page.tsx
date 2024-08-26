@@ -2,11 +2,12 @@
 
 import { LineChart, PieChart } from "@mui/x-charts";
 import Image from "next/image";
+import React from "react";
 
 const Page: React.FC = () => {
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col p-6">
-      <header className="flex justify-between items-center mb-6">
+      {/* <header className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-3xl font-bold">Blogs Dashboard</h2>
           <p className="text-sm text-gray-500">Admin Panel</p>
@@ -27,7 +28,7 @@ const Page: React.FC = () => {
             className="h-10 w-10 rounded-full"
           />
         </div>
-      </header>
+      </header> */}
 
       <section className="grid grid-cols-4 gap-6 mb-6">
         <div className="bg-purple-500 text-white rounded-xl p-4 text-center shadow-lg">
@@ -49,11 +50,48 @@ const Page: React.FC = () => {
       </section>
 
       <div className="flex gap-6 mb-6">
-        <section className="bg-white w-full p-6 rounded-xl shadow-md flex flex-col">
-          <h3 className="text-xl font-bold mb-4">Year Overview</h3>
-          <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
-            <p>Chart Placeholder</p> {/* Replace this with an actual chart */}
+        <section className="bg-white w-full p-6 rounded-xl shadow-md flex gap-2">
+          <div className="w-1/2">
+
+            <h3 className="text-xl font-bold mb-4">Year Overview</h3>
+            <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
+              <div className="flex-1 shadow-md">
+                <LineChart
+                  className="w-full"
+                  xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                  series={[{ data: [2, 5.5, 2, 8.5, 1.5, 5] }]}
+                  width={500}
+                  height={300}
+                />
+              </div>
+            </div>
           </div>
+
+          <div className="w-1/2">
+
+            <h3 className="text-xl font-bold mb-4">Blogs</h3>
+            <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
+              <div className="flex-1 ">
+                <PieChart
+                  series={[
+                    {
+                      data: [
+                        { id: 0, value: 10, label: "series A" },
+                        { id: 1, value: 15, label: "series B" },
+                        { id: 2, value: 20, label: "series C" },
+                      ],
+                    },
+                  ]}
+                  width={400}
+                  height={200}
+                />
+              </div>
+            </div>
+          </div>
+
+
+
+
         </section>
 
         <section className="bg-white p-6 w-2/6 rounded-xl shadow-md">
@@ -84,31 +122,9 @@ const Page: React.FC = () => {
       </div>
 
       <div className="flex gap-6">
-        <div className="flex-1 shadow-md">
-          <LineChart
-            className="w-full"
-            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-            series={[{ data: [2, 5.5, 2, 8.5, 1.5, 5] }]}
-            width={500}
-            height={300}
-          />
-        </div>
 
-        <div className="flex-1 shadow-md">
-          <PieChart
-            series={[
-              {
-                data: [
-                  { id: 0, value: 10, label: "series A" },
-                  { id: 1, value: 15, label: "series B" },
-                  { id: 2, value: 20, label: "series C" },
-                ],
-              },
-            ]}
-            width={400}
-            height={200}
-          />
-        </div>
+
+
       </div>
     </main>
   );
