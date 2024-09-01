@@ -1,19 +1,31 @@
+import { corsMiddleware } from './middleware/cors';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function corsMiddleware(req: NextRequest) {
-  const res = NextResponse.next();
-
-  // Set CORS headers to allow all origins, methods, and headers
-  res.headers.set('Access-Control-Allow-Credentials', 'true');
-  res.headers.set('Access-Control-Allow-Origin', '*'); // Replace '*' with specific origins in production
-  res.headers.set('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE,PATCH');
-  res.headers.set('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Content-Type, Authorization, *');
-
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    return new NextResponse(null, { status: 204, headers: res.headers });
+export async function middleware(req: NextRequest) {
+  // Apply CORS middleware
+  const corsResponse = corsMiddleware(req);
+  if (corsResponse) {
+    return corsResponse;
   }
 
-  return res;
+  // Proceed with authentication after CORS
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
+
+  if (!token && pathname.startsWith('/admin')) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  if (token && pathname === '/') {
+    return NextResponse.redirect(new URL('/admin', req.url));
+  }
+
+  return NextResponse.next();
 }
+
+// Config to apply the middleware to the desired routes
+export const config = {
+  matcher: ['/admin/:path*', '/'], // Matches any path under "/admin" and the root "/"
+};
