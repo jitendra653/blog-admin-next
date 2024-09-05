@@ -20,7 +20,7 @@ const Sidebar: FC = () => {
   };
 
   return (
-    <div className="h-[100vh] shadow-xl">
+    <div className="h-max pb-14 shadow-xl px-14">
       <h3 className="flex justify-center font-semibold m-2 text-2xl">
         Dashboard
       </h3>

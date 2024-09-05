@@ -2,9 +2,22 @@
 
 import { LineChart, PieChart } from "@mui/x-charts";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Page: React.FC = () => {
+
+  const [statistics, setStatistics] = useState({ categoryOverview: [], tagsOverview: [], totalBlogs: '-', draftBlogs: '-', totalTagsCount: '-', totalTags: [], totalCategory: [], totalCategoryCount: '-' });
+
+
+  useEffect(() => {
+    fetch(`/api/statistics`)
+      .then((response) => response.json())
+      .then((data) => {
+        setStatistics(data);
+      })
+      .catch((error) => console.error('Error fetching post data:', error));
+  }, [])
+
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col p-6">
       {/* <header className="flex justify-between items-center mb-6">
@@ -33,66 +46,58 @@ const Page: React.FC = () => {
       <section className="grid grid-cols-4 gap-6 mb-6">
         <div className="bg-purple-500 text-white rounded-xl p-4 text-center shadow-lg">
           <h3 className="text-xl font-bold">Total Blogs</h3>
-          <p className="text-3xl mt-2">8</p>
+          <p className="text-3xl mt-2">{statistics?.totalBlogs || 0}</p>
         </div>
         <div className="bg-pink-500 text-white rounded-xl p-4 text-center shadow-lg">
-          <h3 className="text-xl font-bold">Total Topics</h3>
-          <p className="text-3xl mt-2">4</p>
+          <h3 className="text-xl font-bold">Total Category</h3>
+          <p className="text-3xl mt-2">{statistics?.totalCategoryCount}</p>
         </div>
         <div className="bg-yellow-500 text-white rounded-xl p-4 text-center shadow-lg">
           <h3 className="text-xl font-bold">Total Tags</h3>
-          <p className="text-3xl mt-2">6</p>
+          <p className="text-3xl mt-2">{statistics?.totalTagsCount}</p>
         </div>
         <div className="bg-blue-500 text-white rounded-xl p-4 text-center shadow-lg">
           <h3 className="text-xl font-bold">Draft Blogs</h3>
-          <p className="text-3xl mt-2">1</p>
+          <p className="text-3xl mt-2">{statistics?.draftBlogs}</p>
         </div>
       </section>
 
       <div className="flex gap-6 mb-6">
-        <section className="bg-white w-full p-6 rounded-xl shadow-md flex gap-2">
-          <div className="w-1/2">
+        {statistics?.categoryOverview && <section className="bg-white w-full p-6 rounded-xl shadow-md flex gap-2">
+          {/* <div className="w-1/2">
 
-            <h3 className="text-xl font-bold mb-4">Year Overview</h3>
-            <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
-              <div className="flex-1 shadow-md">
-                <LineChart
-                  className="w-full"
-                  xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-                  series={[{ data: [2, 5.5, 2, 8.5, 1.5, 5] }]}
-                  width={500}
-                  height={300}
-                />
-              </div>
+          <h3 className="text-xl font-bold mb-4">Year Overview</h3>
+          <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
+            <div className="flex-1 shadow-md">
+              <LineChart
+                className="w-full"
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                series={[{ data: [2, 5.5, 2, 8.5, 1.5, 5] }]}
+                width={500}
+                height={300}
+              />
             </div>
           </div>
+        </div> */}
+          {/* 
+        <div className="w-1/2">
 
-          <div className="w-1/2">
-
-            <h3 className="text-xl font-bold mb-4">Blogs</h3>
-            <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
-              <div className="flex-1 ">
-                <PieChart
-                  series={[
-                    {
-                      data: [
-                        { id: 0, value: 10, label: "series A" },
-                        { id: 1, value: 15, label: "series B" },
-                        { id: 2, value: 20, label: "series C" },
-                      ],
-                    },
-                  ]}
-                  width={400}
-                  height={200}
-                />
-              </div>
+          <h3 className="text-xl font-bold mb-4">Blogs</h3>
+          <div className="h-64 bg-blue-100 rounded-xl flex items-center justify-center">
+            <div className="flex-1 ">
+              <PieChart
+                series={statistics?.categoryOverview}
+                width={400}
+                height={200}
+              />
             </div>
           </div>
+        </div> */}
 
 
 
 
-        </section>
+        </section>}
 
         <section className="bg-white p-6 w-2/6 rounded-xl shadow-md">
           <h3 className="text-xl font-bold mb-4">Blogs By Category</h3>
@@ -104,18 +109,12 @@ const Page: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="py-2">Html, Css & JavaScript</td>
-                <td className="py-2">3</td>
-              </tr>
-              <tr>
-                <td className="py-2">Next Js, React Js</td>
-                <td className="py-2">3</td>
-              </tr>
-              <tr>
-                <td className="py-2">Database</td>
-                <td className="py-2">2</td>
-              </tr>
+              {statistics?.tagsOverview.map((value, i) => (
+                <tr>
+                  <td className="py-2">{value?.text || 'Other'}</td>
+                  <td className="py-2">{value?.value}</td>
+                </tr>))
+              }
             </tbody>
           </table>
         </section>

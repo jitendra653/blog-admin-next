@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <main className="flex">
       <ToastContainer />
-      <div className="w-1/5">
+      <div className="w-max">
         <Sidebar />
       </div>
       <div className="w-4/5">
