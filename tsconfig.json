@@ -27,18 +27,19 @@
         "./*"
       ]
     },
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["@testing-library/jest-dom", "jest"],
+
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
-    // "**/*.ts",
-    // "**/*.tsx",
-    // ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    ".next/types/app/api/auth/login/route.ts",
-    "_*","app/*",".next/*"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/__test__/login.spec.jsx"],
+  "exclude": ["node_modules"]
+  // "include": [
+  //   "next-env.d.ts",
+  //   ".next/types/**/*.ts"
+  // ],
+  // "exclude": [
+  //   "node_modules",
+  //   ".next/types/app/api/auth/login/route.ts",
+  //   "_*","app/*",".next/*"
+  // ]
 }
