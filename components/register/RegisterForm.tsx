@@ -10,7 +10,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ export default function RegisterForm() {
       if (res.ok) {
         const form = e.target as HTMLFormElement;
         form.reset();
-        router.push("/");
+        // router.push("/");
       } else {
         console.log("User registration failed.");
       }
@@ -70,18 +70,21 @@ export default function RegisterForm() {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             type="text"
             placeholder="Full Name"
+            data-testid="name-input"
           />
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             type="text"
             placeholder="Email"
+            data-testid="email-input"
           />
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
+            data-testid="password-input"
           />
-          <button type="submit">Register</button>
+          <button data-testid="register-button" type="submit">Register</button>
 
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
@@ -89,7 +92,7 @@ export default function RegisterForm() {
             </div>
           )}
 
-          <Link className="text-sm mt-3 text-right" href={"/"}>
+          <Link data-testid="login-link" className="text-sm mt-3 text-right" href={"/"}>
             Already have an account? <span className="underline">Login</span>
           </Link>
         </form>

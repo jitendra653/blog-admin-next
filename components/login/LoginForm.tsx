@@ -9,7 +9,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const router = useRouter();
+  // const router = useRouter();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -22,7 +22,9 @@ export default function LoginForm() {
         setError("Invalid Credentials");
         return;
       }
-      router.replace("/admin");
+
+      
+      // router.replace("/admin");
     } catch (error) {
       console.error("Login error:", error);
     }
