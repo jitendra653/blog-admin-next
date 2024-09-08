@@ -4,14 +4,17 @@ import Link from "next/link";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import loaderStore from "../../app/stores/loaderStore";
+import React from "react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  // const router = useRouter();
+  const router = useRouter();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    loaderStore.show();
     try {
       const res = await signIn("credentials", {
         email,
@@ -20,11 +23,11 @@ export default function LoginForm() {
       });
       if (res?.error) {
         setError("Invalid Credentials");
+        loaderStore.hide();
         return;
       }
-
-      
-      // router.replace("/admin");
+      router.replace("/admin");
+      loaderStore.hide();
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -47,7 +50,7 @@ export default function LoginForm() {
             placeholder="Password"
             value={password}
           />
-          <button 
+          <button
             type="submit"
             className="bg-violet-600 hover:bg-violet-900 hover:border-violet-600 text-white font-bold cursor-pointer px-6 py-2"
           >

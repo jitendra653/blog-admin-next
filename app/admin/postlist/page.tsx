@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import React from "react";
+import loaderStore from "../../stores/loaderStore";
 
 interface Post {
   id: number;
@@ -28,6 +29,7 @@ const Settings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchPost = async () => {
+    loaderStore.show();
     try {
       const res = await fetch('/api/post');
       const data = await res.json();
@@ -45,6 +47,7 @@ const Settings = () => {
       }));
 
       setPost(postData);
+      loaderStore.hide();
     } catch (error) {
       console.error('Error fetching post data:', error);
     }
@@ -55,10 +58,13 @@ const Settings = () => {
   }, []);
 
   const handleEdit = (id: string) => {
+    loaderStore.show();
     router.push(`/admin/post/${id}`);
+    loaderStore.hide();
   };
 
   const handleDelete = async (id: string) => {
+    loaderStore.show();
     try {
       const response = await fetch(`/api/post/${id}`, {
         method: 'DELETE',
@@ -72,10 +78,12 @@ const Settings = () => {
         toast.error('Error deleting post data');
         setIsModalOpen(false);
       }
+      loaderStore.hide();
     } catch (error) {
       console.error('Error deleting post data:', error);
       toast.error('Error deleting post data');
       setIsModalOpen(false);
+      loaderStore.hide();
     }
   };
 

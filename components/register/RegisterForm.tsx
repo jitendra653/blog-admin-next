@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import loaderStore from "../../app/stores/loaderStore";
+import React from "react";
 
 export default function RegisterForm() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    loaderStore.show();
     if (!name || !email || !password) {
       setError("All fields are necessary.");
+      loaderStore.hide();
       return;
     }
 
@@ -33,6 +35,7 @@ export default function RegisterForm() {
 
       if (user) {
         setError("User already exists.");
+        loaderStore.hide();
         return;
       }
 
@@ -51,11 +54,13 @@ export default function RegisterForm() {
       if (res.ok) {
         const form = e.target as HTMLFormElement;
         form.reset();
-        // router.push("/");
+        router.push("/");
       } else {
         console.log("User registration failed.");
       }
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.log("Error during registration: ", error);
     }
   };

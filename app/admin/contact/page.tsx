@@ -3,6 +3,7 @@
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import loaderStore from '../../stores/loaderStore';
 
 interface User {
   id?: number;
@@ -17,6 +18,7 @@ interface User {
 const Page = () => {
   const [contact, setContact] = useState<User[]>([]);
   const fetchContact = async () => {
+    loaderStore.show();
     try {
       const res = await fetch('/api/contact');
       const data: User[] = await res.json();
@@ -25,7 +27,9 @@ const Page = () => {
         id: i + 1,
       }));
       setContact(userData);
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.error('Error fetching contact data:', error);
     }
   };
