@@ -36,6 +36,7 @@ const AddPost = () => {
 
     if (!title || !description || !image || !status) {
       toast.warning('All fields are necessary.');
+      loaderStore.hide();
       return;
     }
 
