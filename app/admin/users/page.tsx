@@ -10,6 +10,7 @@ import UserForm from '@/components/user/UserForm';
 import Modal from '@/components/modal/Modal';
 import Link from 'next/link';
 import React from 'react';
+import loaderStore from '../../stores/loaderStore';
 
 interface User {
   id?: number;
@@ -17,7 +18,7 @@ interface User {
   email: string;
   role: string;
   status: string;
-  _id?:any
+  _id?: any
 }
 
 interface UserFormData {
@@ -35,9 +36,11 @@ const Page = () => {
   const [isModalOpenDelete, setIsModalOpenDelete] = useState<boolean>(false);
   const [initialData, setInitialData] = useState<User | {}>({});
   const [isAdd, setIsAdd] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>('');
   const router = useRouter();
 
   const fetchUser = async () => {
+    loaderStore.show();
     try {
       const res = await fetch('/api/profile');
       const data: User[] = await res.json();
@@ -46,7 +49,9 @@ const Page = () => {
         id: i + 1,
       }));
       setUser(userData);
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.error('Error fetching user data:', error);
     }
   };
@@ -56,18 +61,26 @@ const Page = () => {
   }, []);
 
   const handleEdit = (data: User) => {
+    loaderStore.show();
     setIsAdd(false);
     setInitialData(data);
     setIsModalOpen(true);
+    loaderStore.hide();
   };
 
   const handleDelete = (id: string) => {
+    loaderStore.show();
     fetch(`/api/profile/${id}`, {
       method: 'DELETE',
     })
       .then((response) => response.json())
-      .then(() => {
-        toast.success('User deleted successfully');
+      .then((response: any) => {
+        console.log({ response });
+        if (response?.message == 'Invalid user ID') {
+          toast.error('Invalid user ID');
+        } else {
+          toast.success('User deleted successfully');
+        }
         setIsModalOpenDelete(false);
         fetchUser();
       })
@@ -75,6 +88,7 @@ const Page = () => {
         console.error('Error deleting user data:', error);
         toast.error('Error deleting User data');
         setIsModalOpenDelete(false);
+        loaderStore.hide();
       });
   };
 
@@ -105,14 +119,14 @@ const Page = () => {
             variant="contained"
             color="secondary"
             size="small"
-            onClick={() => setIsModalOpenDelete(true)}
+            onClick={() => {setDeleteId(params.row._id);setIsModalOpenDelete(true)}}
           >
             Delete
           </Button>
           <ModalAlert
             isOpen={isModalOpenDelete}
             onClose={() => setIsModalOpenDelete(false)}
-            onConfirm={() => handleDelete(params.row.id)}
+            onConfirm={() => handleDelete(deleteId)}
           >
             Are you sure you want to delete this user?
           </ModalAlert>

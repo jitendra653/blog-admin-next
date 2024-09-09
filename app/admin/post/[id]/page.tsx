@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import loaderStore from '../../../stores/loaderStore';
 
 interface EditFormProps {
   params: {
@@ -37,6 +38,7 @@ const EditPost: React.FC<EditFormProps> = ({ params }) => {
 
   useEffect(() => {
     if (id) {
+      loaderStore.show();
       fetch(`/api/post/${id}`)
         .then((response) => response.json())
         .then((data) => {
@@ -49,13 +51,17 @@ const EditPost: React.FC<EditFormProps> = ({ params }) => {
             tags: data?.tags || [],
             status: data?.status || '',
           });
+          loaderStore.hide();
         })
-        .catch((error) => console.error('Error fetching post data:', error));
+        .catch((error) => {
+          loaderStore.hide();
+          console.error('Error fetching post data:', error)});
     }
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    loaderStore.show();
     const { title, description, image } = postData;
     if (!title || !description || !image) {
       toast.warning('All fields are necessary.');
@@ -75,7 +81,9 @@ const EditPost: React.FC<EditFormProps> = ({ params }) => {
       } else {
         toast.error('Error editing post data');
       }
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.error("Error during editing: ", error);
     }
   };

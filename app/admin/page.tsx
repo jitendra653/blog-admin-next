@@ -3,6 +3,7 @@
 import { LineChart, PieChart } from "@mui/x-charts";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import loaderStore from "../stores/loaderStore";
 
 const Page: React.FC = () => {
 
@@ -10,10 +11,12 @@ const Page: React.FC = () => {
 
 
   useEffect(() => {
+    loaderStore.show();
     fetch(`/api/statistics`)
       .then((response) => response.json())
       .then((data) => {
         setStatistics(data);
+        loaderStore.hide();
       })
       .catch((error) => console.error('Error fetching post data:', error));
   }, [])

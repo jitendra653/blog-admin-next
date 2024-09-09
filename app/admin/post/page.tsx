@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import dynamic from 'next/dynamic';
+import loaderStore from "../../stores/loaderStore";
 const PostForm = dynamic(() => import('../../../components/post/PostForm'), {ssr: false,});
 interface PostData {
   title: string;
@@ -30,10 +31,12 @@ const AddPost = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    loaderStore.show();
     const { title, description, image, status } = postData;
 
     if (!title || !description || !image || !status) {
       toast.warning('All fields are necessary.');
+      loaderStore.hide();
       return;
     }
 
@@ -52,7 +55,9 @@ const AddPost = () => {
       } else {
         toast.error('Error editing post data');
       }
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.error("Error during post data save: ", error);
     }
   };

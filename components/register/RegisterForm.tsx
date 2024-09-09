@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import loaderStore from "../../app/stores/loaderStore";
+import React from "react";
 
 export default function RegisterForm() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    loaderStore.show();
     if (!name || !email || !password) {
       setError("All fields are necessary.");
+      loaderStore.hide();
       return;
     }
 
@@ -33,6 +35,7 @@ export default function RegisterForm() {
 
       if (user) {
         setError("User already exists.");
+        loaderStore.hide();
         return;
       }
 
@@ -55,7 +58,9 @@ export default function RegisterForm() {
       } else {
         console.log("User registration failed.");
       }
+      loaderStore.hide();
     } catch (error) {
+      loaderStore.hide();
       console.log("Error during registration: ", error);
     }
   };
@@ -70,18 +75,21 @@ export default function RegisterForm() {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             type="text"
             placeholder="Full Name"
+            data-testid="name-input"
           />
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             type="text"
             placeholder="Email"
+            data-testid="email-input"
           />
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
+            data-testid="password-input"
           />
-          <button type="submit">Register</button>
+          <button data-testid="register-button" type="submit">Register</button>
 
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
@@ -89,7 +97,7 @@ export default function RegisterForm() {
             </div>
           )}
 
-          <Link className="text-sm mt-3 text-right" href={"/"}>
+          <Link data-testid="login-link" className="text-sm mt-3 text-right" href={"/"}>
             Already have an account? <span className="underline">Login</span>
           </Link>
         </form>
