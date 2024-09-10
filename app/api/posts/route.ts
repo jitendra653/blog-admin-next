@@ -16,7 +16,7 @@ interface PostData {
 export const GET = async (req: NextRequest) => {
   try {
     await connectMongoDB();
-    const posts = await Post.find({status: {$ne :"Draft"}});
+    const posts = await Post.find({ status: { $ne: "Draft" } }).sort({ _id: -1 });
     return NextResponse.json(posts, { status: 200 });
   } catch (error:any) {
     console.error('Failed to fetch posts:', error);
