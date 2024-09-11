@@ -33,9 +33,9 @@ describe('RegisterForm Component', () => {
       statusCode: 400,
     });
 
-    cy.get('input[placeholder="Full Name"]').type('John Doe');
-    cy.get('input[placeholder="Email"]').type('existinguser@example.com');
-    cy.get('input[placeholder="Password"]').type('password123');
+    cy.get('input[placeholder="Full Name"]').type('Jitendra Patidar');
+    cy.get('input[placeholder="Email"]').type('admin@gmail.com')
+    cy.get('input[placeholder="Password"]').type('admin@gmail.com')
     cy.get('button[type="submit"]').click();
 
     cy.get('div.bg-red-500')
@@ -53,9 +53,9 @@ describe('RegisterForm Component', () => {
       statusCode: 200,
     });
 
-    cy.get('input[placeholder="Full Name"]').type('Jane Doe');
-    cy.get('input[placeholder="Email"]').type('newuser@example.com');
-    cy.get('input[placeholder="Password"]').type('password123');
+    cy.get('input[placeholder="Full Name"]').type('Jitendra');
+    cy.get('input[placeholder="Email"]').type('jitendra@gmail.com')
+    cy.get('input[placeholder="Password"]').type('Admin@123');
     cy.get('button[type="submit"]').click();
 
     cy.get('input[placeholder="Full Name"]').should('have.value', '');

@@ -1,19 +1,19 @@
-"use client";
-import { toast } from "react-toastify";
-import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import React from "react";
-import dynamic from 'next/dynamic';
-import loaderStore from "../../stores/loaderStore";
-const PostForm = dynamic(() => import('../../../components/post/PostForm'), {ssr: false,});
+'use client'
+import { toast } from 'react-toastify'
+import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import dynamic from 'next/dynamic'
+import loaderStore from '../../stores/loaderStore'
+const PostForm = dynamic(() => import('../../../components/post/PostForm'), { ssr: false })
 interface PostData {
-  title: string;
-  image: string;
-  description: string;
-  content: string;
-  category?: string;
-  tags?: string[];
-  status: "Draft" | "Published" | "";
+  title: string
+  image: string
+  description: string
+  content: string
+  category?: string
+  tags?: string[]
+  status: 'Draft' | 'Published' | ''
 }
 
 const AddPost = () => {
@@ -25,51 +25,44 @@ const AddPost = () => {
     category: '',
     tags: [],
     status: '',
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    loaderStore.show();
-    const { title, description, image, status } = postData;
+    e.preventDefault()
+    loaderStore.show()
+    const { title, description, image, status } = postData
 
     if (!title || !description || !image || !status) {
-      toast.warning('All fields are necessary.');
-      return;
+      toast.warning('All fields are necessary.')
+      loaderStore.hide()
+      return
     }
 
     try {
-      const res = await fetch("/api/post", {
-        method: "POST",
+      const res = await fetch('/api/post', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(postData),
-      });
+      })
 
       if (res.ok) {
-        toast.success('Post added successfully');
-        router.push("/admin/postlist");
+        toast.success('Post added successfully')
+        router.push('/admin/postlist')
       } else {
-        toast.error('Error editing post data');
+        toast.error('Error editing post data')
       }
-      loaderStore.hide();
+      loaderStore.hide()
     } catch (error) {
-      loaderStore.hide();
-      console.error("Error during post data save: ", error);
+      loaderStore.hide()
+      console.error('Error during post data save: ', error)
     }
-  };
+  }
 
-  return (
-    <PostForm
-      handleSubmit={handleSubmit}
-      setPostData={setPostData}
-      postData={postData}
-    />
-  );
+  return <PostForm handleSubmit={handleSubmit} setPostData={setPostData} postData={postData} />
 }
 
-export default AddPost;
-
-
+export default AddPost
