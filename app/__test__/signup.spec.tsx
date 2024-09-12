@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import RegisterForm from "@/components/register/RegisterForm"; // Adjust the import path as needed
+import RegisterForm from "../../components/register/RegisterForm"; // Adjust the import path as needed
 
 describe('RegisterForm Component', () => {
   test('renders the register form', () => {
