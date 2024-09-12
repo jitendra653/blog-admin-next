@@ -27,6 +27,7 @@ const Settings = () => {
   const [post, setPost] = useState<Post[]>([]);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string>('');
 
   const fetchPost = async () => {
     loaderStore.show();
@@ -151,14 +152,14 @@ const Settings = () => {
               variant="contained"
               color="secondary"
               size="small"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {setDeleteId(params.row.postId),setIsModalOpen(true)}}
             >
               Delete
             </Button>
             <Modal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              onConfirm={() => { handleDelete(params.row.postId) }}
+              onConfirm={() => { handleDelete(deleteId) }}
             >
               Are you sure you want to delete this post?
             </Modal>

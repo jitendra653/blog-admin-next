@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 *Message:* ${message}
     `;
     await sendToTelegram(telegramMessage);
-    return NextResponse.json({
+    const response =  NextResponse.json({
       success: true, data: {
         name,
         email,
@@ -56,7 +56,21 @@ export async function POST(req: NextRequest) {
         message,
       }
     }, { status: 201 });
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    return response;
   } catch (error) {
-    return NextResponse.json({ success: false, error: (error as Error).message }, { status: 400 });
+    const response = NextResponse.json({ success: false, error: (error as Error).message }, { status: 400 });
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    return response;
   }
+}
+
+export async function OPTIONS() {
+  const headers = new Headers();
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  return new NextResponse(null, { status: 204, headers });
 }
