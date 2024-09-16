@@ -1,69 +1,11 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useState, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import loaderStore from "../../app/stores/loaderStore";
-import React from "react";
+import Link from 'next/link'
+import { useRegisterForm } from './useRegisterForm'
+import React from 'react'
 
 export default function RegisterForm() {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const router = useRouter();
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    loaderStore.show();
-    if (!name || !email || !password) {
-      setError("All fields are necessary.");
-      loaderStore.hide();
-      return;
-    }
-
-    try {
-      const resUserExists = await fetch("/api/userExists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const { user }: { user: boolean } = await resUserExists.json();
-
-      if (user) {
-        setError("User already exists.");
-        loaderStore.hide();
-        return;
-      }
-
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-
-      if (res.ok) {
-        const form = e.target as HTMLFormElement;
-        form.reset();
-        router.push("/");
-      } else {
-        console.log("User registration failed.");
-      }
-      loaderStore.hide();
-    } catch (error) {
-      loaderStore.hide();
-      console.log("Error during registration: ", error);
-    }
-  };
+  const { name, email, password, error, handleInputChange, handleSubmit, resetForm } = useRegisterForm()
 
   return (
     <div className="grid place-items-center h-screen">
@@ -72,36 +14,55 @@ export default function RegisterForm() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+            name="name"
+            value={name}
+            onChange={handleInputChange}
             type="text"
             placeholder="Full Name"
             data-testid="name-input"
+            className="border p-2 rounded"
           />
           <input
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            type="text"
+            name="email"
+            value={email}
+            onChange={handleInputChange}
+            type="email"
             placeholder="Email"
             data-testid="email-input"
+            className="border p-2 rounded"
           />
           <input
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            name="password"
+            value={password}
+            onChange={handleInputChange}
             type="password"
             placeholder="Password"
             data-testid="password-input"
+            className="border p-2 rounded"
           />
-          <button data-testid="register-button" type="submit">Register</button>
 
-          {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-              {error}
-            </div>
-          )}
-
-          <Link data-testid="login-link" className="text-sm mt-3 text-right" href={"/"}>
+          <div className="flex gap-3 mt-3">
+            <button
+              data-testid="register-button"
+              type="submit"
+              className="bg-violet-600 text-white py-2 rounded w-full"
+            >
+              Register
+            </button>
+            <button
+              type="button"
+              onClick={resetForm} // Call resetForm on click
+              className="bg-gray-500 text-white py-2 rounded w-full"
+            >
+              Reset
+            </button>
+          </div>
+          {error && <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">{error}</div>}
+          <Link data-testid="login-link" className="text-sm mt-3 text-right" href="/">
             Already have an account? <span className="underline">Login</span>
           </Link>
         </form>
       </div>
     </div>
-  );
+  )
 }

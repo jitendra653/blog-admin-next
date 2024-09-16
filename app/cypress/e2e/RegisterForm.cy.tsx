@@ -63,4 +63,20 @@ describe('RegisterForm Component', () => {
     cy.get('input[placeholder="Password"]').should('have.value', '');
   });
 
+
+
+it('should reset the form fields when Reset button is clicked', () => {
+  cy.get('input[placeholder="Full Name"]').type('Jitendra')
+  cy.get('input[placeholder="Email"]').type('jitendra@gmail.com')
+  cy.get('input[placeholder="Password"]').type('Admin@123')
+
+  cy.get('button[type="button"]').contains('Reset').click()
+
+  cy.get('input[placeholder="Full Name"]').should('have.value', '')
+  cy.get('input[placeholder="Email"]').should('have.value', '')
+  cy.get('input[placeholder="Password"]').should('have.value', '')
+})
+
+
+
 });
