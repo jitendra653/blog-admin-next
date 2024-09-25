@@ -137,7 +137,7 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, isAdd, isUser = false,
           >
             <option value="">Select Role</option>
             <option value="admin">Admin</option>
-            <option value="user">User</option>
+            {/* <option value="user">User</option> */}
           </select>
         </div>
         <div>

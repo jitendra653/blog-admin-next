@@ -1,3 +1,5 @@
+import React from "react";
+
 interface ProfileViewProps {
     profile: {
       name: string;

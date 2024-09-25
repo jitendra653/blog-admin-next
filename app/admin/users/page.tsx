@@ -103,7 +103,7 @@ const Page = () => {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 150,
+      width: 250,
       renderCell: (params) => (
         <>
           <Button
