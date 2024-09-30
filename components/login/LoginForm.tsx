@@ -16,6 +16,11 @@ export default function LoginForm() {
     e.preventDefault()
     loaderStore.show()
 
+    if (!email || !password) {
+      setError('All fields are necessary.')
+      loaderStore.hide()
+      return
+    }
     const resUserActive = await fetch('/api/userActive', {
       method: 'POST',
       headers: {

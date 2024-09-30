@@ -25,23 +25,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
           <h2 className="text-3xl font-bold">Blog</h2>
           <p className="text-sm text-gray-500">Admin Panel</p>
         </div>
-        {/* <div className="flex items-center space-x-4">
-          <Image
-          width={20}
-          height={20}
-            src="/uploads/bell--v1.png"
-            alt="Notifications"
-            className="h-6 w-6"
-          />
-          <Image
-          width={10}
-          height={20}
-            src="/uploads/user-male-circle--v1.png"
-            alt="User Profile"
-            className="h-10 w-10 rounded-full"
-          />
-        </div> */}
-      </header>
+       </header>
       {children}</div>
     </main>
   );
