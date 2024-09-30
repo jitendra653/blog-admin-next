@@ -22,7 +22,7 @@
       "@/*": ["./*"]
     },
     "forceConsistentCasingInFileNames": true,
-    "types": ["@testing-library/jest-dom", "jest"]
+    "types": ["@testing-library/jest-dom", "jest","cypress"]
   },
   "include": [
     "next-env.d.ts",

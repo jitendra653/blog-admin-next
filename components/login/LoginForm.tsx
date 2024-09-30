@@ -29,9 +29,13 @@ export default function LoginForm() {
       body: JSON.stringify({ email }),
     })
 
-    const { user }: { user: boolean } = await resUserActive.json()
-
-    if (user) {
+    const { user, active, message, userExits }: { user: any; active: boolean; userExits: boolean; message: string } = await resUserActive.json()
+   
+    if (!userExits) {
+      setError('Invalid Credentials')
+      loaderStore.hide()
+      return
+    }else if (active) {
       loaderStore.hide()
       try {
         const res = await signIn('credentials', {
